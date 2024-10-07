@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attendance Form</title>
+    <style>
+        /* Global styles */
+
+* {
+  box-sizing: border-box; /* Include padding in box model */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+body {
+  font-family: Arial, sans-serif; /* Font style */
+  color: #333; /* Dark text color */
+  background-color: #f0f0f0; /* Light gray background */
+  display: flex; /* Flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full viewport height */
+}
+
+/* Form styles */
+
+form {
+  background-color: #ffffff; /* White background for form */
+  max-width: 90%; /* Max width for mobile */
+  width: 100%; /* Full width */
+  margin: 20px auto; /* Margin with auto horizontal centering */
+  padding: 15px; /* Padding for smaller devices */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Typography */
+
+h2 {
+  text-align: center; /* Center title */
+  color: #333; /* Dark color for title */
+  font-size: 18px; /* Adjust font size for mobile */
+}
+
+label {
+  display: block; /* Block display for labels */
+  margin-bottom: 5px; /* Margin below labels */
+  font-weight: bold; /* Bold labels */
+  font-size: 16px; /* Adjust font size for mobile */
+}
+
+/* Form elements */
+
+input, select, textarea {
+  width: 100%; /* Full width for inputs */
+  padding: 10px; /* Padding inside inputs */
+  margin-bottom: 15px; /* Margin below inputs */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+button {
+  width: 100%; /* Full width button */
+  padding: 10px; /* Padding inside button */
+  background-color: #333; /* Dark background for button */
+  color: white; /* White text for button */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer on hover */
+  font-size: 16px; /* Font size */
+}
+
+button:hover {
+  background-color: #555; /* Darker gray on hover */
+}
+
+/* Hidden by default */
+
+.leave-options,
+.short-leave-options {
+  display: none; /* Hide options initially */
+}
+
+/* Media query for mobile devices */
+
+/* Media query for mobile devices */
+
+/* Media query for mobile devices */
+
+@media (max-width: 480px) {
+  form {
+    padding: 10px; /* Reduce padding on smaller screens */
+    margin: 10px; /* Reduce margin on smaller screens */
+    height: 80vh; /* Set height to 80% of viewport height */
+    overflow-y: auto; /* Add vertical scrollbar if content exceeds height */
+  }
+
+  /* Additional mobile-specific styles */
+
+  .form-element {
+    margin-bottom: 20px; /* Increase margin between form elements */
+  }
+
+  button {
+    padding: 10px; /* Increase button padding */
+    font-size: 16px; /* Increase button font size */
+    margin-top: 20px; /* Increase margin above button */
+  }
+}
+    </style>
+</head>
+<body>
+
+
+
+<form id="attendanceForm">
+  <h2>Employee Attendance Form</h2>
+    <label for="date_time">Date and Time:</label>
+    <input type="datetime-local" id="date_time" name="date_time" required>
+
+    <label for="employee_name">Employee Name:</label>
+    <select id="employee_name" name="employee_name" required>
+        <option value="">Loading names...</option>
+    </select>
+
+    <label for="employee_id">Employee ID:</label>
+    <input type="text" id="employee_id" name="employee_id" required readonly>
+
+    <label for="employee_email">Employee Email ID:</label>
+    <input type="email" id="employee_email" name="employee_email" required readonly>
+
+    <label for="attendance_type">Attendance Type:</label>
+    <select id="attendance_type" name="attendance_type" required>
+        <option value="">Select Attendance Type</option>
+        <option value="in_time">In-time</option>
+        <option value="out_time">Out-time</option>
+        <option value="leave">Leave</option>
+        <option value="short_leave">Short Leave</option>
+    </select>
+
+    
+    <div class="leave-options" id="leave-options">
+        <label for="leave_type">Leave Type:</label>
+        <select id="leave_type" name="leave_type">
+            <option value="">Select Leave Type</option>
+            <option value="full_day">Full Day</option>
+            <option value="1st_half_day">1st Half Day</option>
+            <option value="2nd_half_day">2nd Half Day</option>
+        </select>
+
+        <label for="leave_reason">Leave Reason (Optional):</label>
+        <textarea id="leave_reason" name="leave_reason" rows="4" placeholder="Enter the reason for leave..."></textarea>
+    </div>
+
+    
+    <div class="short-leave-options" id="short-leave-options">
+        <label for="short_leave_start">Short Leave Start Time:</label>
+        <input type="datetime-local" id="short_leave_start" name="short_leave_start">
+
+        <label for="short_leave_end">Short Leave End Time:</label>
+        <input type="datetime-local" id="short_leave_end" name="short_leave_end">
+
+        <label for="short_leave_reason">Short Leave Reason (Optional):</label>
+        <textarea id="short_leave_reason" name="short_leave_reason" rows="4" placeholder="Enter the reason for short leave..."></textarea>
+    </div>
+
+    <label for="remarks">Remarks (Optional):</label>
+    <textarea id="remarks" name="remarks" rows="4" placeholder="Enter any additional information..."></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    // Set the current date and time in the input field
+    function setCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        const datetimeValue = `${year}-${month}-${day}T${hours}:${minutes}`;
+        document.getElementById('date_time').value = datetimeValue;
+    }
+
+    // Call the function to set the current date and time
+    setCurrentDateTime();
+
+    // Fetch employee data from Google Sheets
+    google.script.run.withSuccessHandler(function(data) {
+        const nameSelect = document.getElementById('employee_name');
+
+        nameSelect.innerHTML = '<option value="">Select an Employee</option>';
+
+        data.forEach(employee => {
+            const nameOption = document.createElement('option');
+            nameOption.value = employee.name;
+            nameOption.dataset.id = employee.id;     // Store Employee ID
+            nameOption.dataset.email = employee.email; // Store Employee Email
+            nameOption.textContent = employee.name;
+            nameSelect.appendChild(nameOption);
+        });
+
+        // Add event listener to update Employee ID and Email based on selected name
+        nameSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const employeeIdInput = document.getElementById('employee_id');
+            const employeeEmailInput = document.getElementById('employee_email');
+
+            if (selectedOption.value) {
+                employeeIdInput.value = selectedOption.dataset.id;     // Set the Employee ID
+                employeeEmailInput.value = selectedOption.dataset.email; // Set the Employee Email
+            } else {
+                employeeIdInput.value = ''; // Clear the input if no name is selected
+                employeeEmailInput.value = ''; // Clear the input if no name is selected
+            }
+        });
+    }).getEmployeeData();
+
+    // Handle attendance type change
+    document.getElementById('attendance_type').addEventListener('change', function() {
+        const leaveOptions = document.getElementById('leave-options');
+        const shortLeaveOptions = document.getElementById('short-leave-options');
+
+        if (this.value === 'leave') {
+            leaveOptions.style.display = 'block'; // Show leave options
+            shortLeaveOptions.style.display = 'none'; // Hide short leave options
+        } else if (this.value === 'short_leave') {
+            leaveOptions.style.display = 'none'; // Hide leave options
+            shortLeaveOptions.style.display = 'block'; // Show short leave options
+        } else {
+            leaveOptions.style.display = 'none'; // Hide leave options
+            shortLeaveOptions.style.display = 'none'; // Hide short leave options
+        }
+    });
+
+    // Handle form submission
+    document.getElementById('attendanceForm').onsubmit = function(e) {
+        e.preventDefault();
+
+        // Gather form data
+        const formData = {
+            date_time: document.getElementById('date_time').value,
+            employee_name: document.getElementById('employee_name').value,
+            employee_id: document.getElementById('employee_id').value,
+            employee_email: document.getElementById('employee_email').value,
+            attendance_type: document.getElementById('attendance_type').value,
+            leave_type: document.getElementById('leave_type').value,
+            leave_reason: document.getElementById('leave_reason').value,
+            short_leave_start: document.getElementById('short_leave_start').value,
+            short_leave_end: document.getElementById('short_leave_end').value,
+            short_leave_reason: document.getElementById('short_leave_reason').value,
+            remarks: document.getElementById('remarks').value
+        };
+
+        // Call the server-side function to submit the attendance
+        google.script.run.withSuccessHandler(function(response) {
+            alert('Form submitted successfully!');
+            document.getElementById('attendanceForm').reset(); // Reset the form
+            setCurrentDateTime(); // Reset date and time
+        }).submitAttendance(formData); // Call the submitAttendance function
+    };
+</script>
+
+</body>
+</html>
+
+
+
